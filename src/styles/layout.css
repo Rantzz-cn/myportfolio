@@ -1,0 +1,198 @@
+/* ==========================================================================
+   layout.css
+   Page-level structure: containers, section spacing, grid systems used
+   across multiple sections.
+   ========================================================================== */
+
+/* ---------- Container ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* ---------- Generic Section Spacing ---------- */
+.section {
+  padding-block: var(--space-9);
+  position: relative;
+}
+
+.section__header {
+  margin-bottom: var(--space-8);
+  text-align: left;
+  max-width: 640px;
+}
+
+.section__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+
+.section__eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  background-color: var(--color-accent);
+}
+
+.section__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-3xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-foreground);
+}
+
+.section__subtitle {
+  margin-top: var(--space-3);
+  max-width: 640px;
+  color: var(--color-muted-foreground);
+  font-size: var(--fs-base);
+}
+
+/* ---------- Hero Layout ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: calc(100vh - 72px);
+  padding-block: var(--space-8);
+  position: relative;
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+  z-index: 2;
+}
+
+.hero__visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* ---------- Skills Grid ---------- */
+.skills__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-5);
+}
+
+/* ---------- Projects Grid ---------- */
+.projects__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+/* ---------- Timeline Layout ---------- */
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  padding-left: var(--space-6);
+  border-left: var(--border-width) solid var(--color-border);
+}
+
+/* ---------- Certifications Grid ---------- */
+.certs__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+/* ---------- Contact Layout ---------- */
+.contact__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-7);
+}
+
+/* ---------- Footer Layout ---------- */
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-6);
+  border-top: var(--border-width) solid var(--color-border);
+  text-align: center;
+}
+
+/* ---------- Alternating section background rhythm ---------- */
+#about,
+#experience {
+  background-color: var(--color-background-alt);
+}
+
+/* ==========================================================================
+   WebGL canvas + z-index layering
+   ========================================================================== */
+
+/* Canvas sits fixed behind everything */
+#gl-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+
+/* Lift all page chrome above the canvas */
+.navbar,
+main#main-content,
+footer.footer,
+.back-to-top {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sections get their proper background — canvas only shows through hero */
+.section {
+  background-color: var(--color-background);
+}
+
+#hero {
+  background-color: transparent;
+}
+
+#about,
+#experience {
+  background-color: var(--color-background-alt);
+}
+
+/* Cards sit above canvas */
+.card,
+.skill-card,
+.cert-card,
+.project-card,
+.contact__form-wrapper,
+.contact-info {
+  position: relative;
+  z-index: 1;
+}
+
+/* Light mode: dim the WebGL canvas so it doesn't fight the white background */
+html[data-theme="light"] #gl-bg {
+  opacity: 0.18;
+}

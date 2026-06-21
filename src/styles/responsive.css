@@ -1,0 +1,80 @@
+/* ==========================================================================
+   responsive.css
+   Mobile-first breakpoints. Base styles (in other files) target mobile;
+   this file layers on tablet and desktop adjustments.
+   ========================================================================== */
+
+/* ---------- Tablet: 768px and up ---------- */
+@media (min-width: 768px) {
+  :root {
+    --container-padding: var(--space-6);
+  }
+
+  .navbar__links {
+    display: flex;
+  }
+
+  .navbar__toggle,
+  .navbar__mobile-menu {
+    display: none;
+  }
+
+  .projects__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .certs__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .section__title {
+    font-size: var(--fs-4xl);
+  }
+
+  .footer__inner {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+/* Desktop: 1024px and up */
+@media (min-width: 1024px) {
+  .certs__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- Desktop: 1024px and up ---------- */
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+
+  .hero__visual {
+    order: 2;
+  }
+
+  .hero__content {
+    order: 1;
+  }
+
+  .projects__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .contact__grid {
+    grid-template-columns: 1fr 1.2fr;
+  }
+
+  .skills__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- Reduced motion: disable signature ambient motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero__role::after {
+    animation: none;
+    opacity: 1;
+  }
+}
