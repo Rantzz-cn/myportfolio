@@ -1,46 +1,106 @@
-# Ranier Teraldico — Portfolio (React + Vite)
+# lunico – Personal Portfolio (React + Vite)
 
-React/Vite port of the original vanilla HTML/CSS/JS portfolio. Visual design and copy are unchanged — this is a structural migration.
+A stunning, responsive, dark‑mode aware portfolio built with **React**, **Vite**, **Three.js**, and **Anime.js**. The project includes a custom WebGL background, preloader, hero section with animated particles, and a fully styled component library.
 
-## Setup
+---
+
+## ✨ Features
+
+- **Dark / Light mode** – CSS variables switch themes via `html[data-theme="light"]` and `html[data-theme="dark"]`.
+- **WebGL background** – React‑Three‑Fiber scene with star field, hero particle cloud, and subtle aurora effects.
+- **Preloader** – Animated percentage counter that fades out before the main content appears.
+- **Responsive layout** – Fluid grid system, mobile‑friendly breakpoints, and graceful fallback for reduced‑motion users.
+- **Modern UI** – Custom buttons, smooth hover shines, and glass‑like cards.
+- **Fully SEO‑ready** – Semantic HTML, appropriate meta tags, and Google Fonts (Inter, Space Grotesk, JetBrains Mono).
+- **One‑click deployment** – Configured for Netlify (and works on Vercel, Cloudflare Pages, etc.).
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Framework | React (v18) |
+| Bundler | Vite |
+| 3D / Canvas | three.js + @react-three/fiber |
+| Animations | anime.js |
+| Styling | CSS (variables, components, sections, layout) |
+| Icons | Iconify |
+| Version control | Git + GitHub |
+| Deployment | Netlify (free tier) |
+
+---
+
+## 🚀 Getting Started (local)
 
 ```bash
-npm install
-npm run dev      # local dev server
-npm run build    # production build → dist/
-npm run preview  # preview the production build
+# Clone the repository (replace with your fork if needed)
+git clone https://github.com/Rantzz-cn/lunico.git
+cd lunico
+
+# Install dependencies
+npm ci   # or `npm install`
+
+# Run the development server
+npm run dev
 ```
 
-Deploy to Netlify the same way as before: build command `npm run build`, publish directory `dist`.
+Open `http://localhost:5173` in your browser. The site will automatically detect your OS preference for dark/light mode, but you can toggle it using the switch in the navbar.
 
-## Stack
+---
 
-- **React 18 + Vite**
-- **react-three-fiber** — hero background scene (was raw Three.js r128)
-- **Anime.js** — kept as-is for entrance/hover/reveal animations, wrapped in hooks
-- **Lenis** — smooth scroll (npm package `lenis`, the renamed successor to `@studio-freight/lenis`)
-- **iconify-icon** — kept as the CDN web component, used directly as `<iconify-icon>` in JSX
+## 📦 Build for Production
 
-## Structure
+```bash
+npm run build
+```
+
+The compiled static files are placed in the `dist/` folder, ready to be served by any static‑host (Netlify, Vercel, Cloudflare Pages, GitHub Pages, etc.).
+
+---
+
+## 🏗️ Deploy to Netlify (recommended)
+
+1. Sign in at https://netlify.com with your GitHub account.
+2. Create a new site → **Import from Git** → select `Rantzz-cn/lunico`.
+3. Build command: `npm run build`
+4. Publish directory: `dist`
+5. Click **Deploy site**.
+
+Netlify will now build and host your portfolio automatically on every push to `main`.
+
+---
+
+## 🎨 Theme Switching
+
+The theme is stored in a `data-theme` attribute on the `<html>` element. The light‑mode override rules use the selector `html[data-theme="light"]`. The toggle in the `Navbar` component updates this attribute, and the CSS variables defined in `variables.css` drive the color changes.
+
+---
+
+## 📚 Project Structure (high‑level)
 
 ```
 src/
-  components/        one file per section, plus shared Button + BackgroundScene/
-  data/              projects, experience, skills, certifications, contact — plain arrays
-  hooks/             useTheme, useScrollSpy, useScrollReveal, useMagnetic, useLenis
-  styles/            your original 6 CSS files, untouched, imported in cascade order via index.css
-  assets/            images + resume PDF, imported as modules so Vite hashes/optimizes them
+├─ components/          # React components (Navbar, Footer, Preloader, etc.)
+│   └─ BackgroundScene/   # WebGL scene wrapper
+├─ styles/              # CSS modules (variables, layout, components, sections, responsive)
+├─ App.jsx              # Main layout and routing
+├─ main.jsx             # Entry point, imports global styles
+└─ index.html            # HTML template with Google Fonts & meta tags
 ```
 
-## Notable changes from the original
+---
 
-- **Contact form**: the original had two competing submit handlers (`main.js`'s fake `setTimeout` version and `contact.js`'s real Formspree `fetch` version) both firing on submit. Kept only the real one.
-- **Mobile menu background**: removed the `!important` inline-style override in `<head>` — `components.css` already sets the same `#0d0d0f` background correctly, the override was redundant.
-- **Dead code dropped**: `initHeroParticles()` and the mobile-menu close button in the old `animations.js`/`navigation.js` referenced elements (`.hero__particles`, `#mobile-close-btn`) that don't exist anywhere in the HTML.
-- **`_next` hidden field** removed from the contact form — it pointed at a placeholder `yourdomain.com/thanks.html` and isn't used by the AJAX submit path anyway.
-- **Unused asset**: `profile-white.jpg` exists in `assets/images` but was never actually wired to the light theme (the original's `updateProfileImage()` returned the same image for both themes). It's copied into `src/assets/images` but not imported anywhere — let me know if you want it wired up for light mode.
+## 📄 License
 
-## Known follow-ups
+MIT – feel free to fork, remix, and use it for your own portfolio.
 
-- The production bundle is ~1MB (mostly `three`/`@react-three/fiber`). Worth lazy-loading `GLBackground` with `React.lazy()` if initial load time matters.
-- No ESLint config included yet — add one if you want lint-on-save.
+---
+
+## 🙋‍♂️ Author
+
+**Ranier Teraldico** – UI/UX designer & front‑end developer.
+
+Follow me on:
+- GitHub: https://github.com/Rantzz-cn
+- LinkedIn: https://linkedin.com/in/ranier-teraldico

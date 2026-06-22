@@ -14,4 +14,9 @@ export const certifications = [
     title: 'Cisco Networking Academy',
     subtitle: 'Network Administration',
   },
+    {
+    id: 'google-agile',
+    title: 'Google Agile Scrum',
+    subtitle: 'Project Management',
+  },
 ];
