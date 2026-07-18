@@ -5,7 +5,7 @@ import { Button } from './Button';
  * Single project card with the cursor-aware spotlight glow
  * (initProjectSpotlight in the original).
  */
-export function ProjectCard({ project }) {
+export function ProjectCard({ project, featured = false }) {
   const cardRef = useRef(null);
 
   function onMouseMove(event) {
@@ -18,9 +18,12 @@ export function ProjectCard({ project }) {
     card.style.setProperty('--spot-y', y + '%');
   }
 
+  const hasDemo = project.demoUrl && project.demoUrl !== '#';
+  const hasGithub = project.githubUrl && project.githubUrl !== '#';
+
   return (
     <article
-      className="card project-card"
+      className={`card project-card${featured ? ' project-card--featured' : ''}`}
       ref={cardRef}
       onMouseMove={onMouseMove}
       style={{
@@ -35,13 +38,21 @@ export function ProjectCard({ project }) {
           className="project-card__image"
           src={project.image}
           alt={project.alt}
+          style={project.imageFit ? { objectFit: project.imageFit } : undefined}
           loading="lazy"
           width="800"
           height="500"
         />
+        <div className="project-card__media-meta">
+          {project.featured && <span className="project-card__featured">Featured</span>}
+          <span>{project.year}</span>
+        </div>
       </div>
       <div className="project-card__body">
-        <h3 className="project-card__title">{project.title}</h3>
+        <div className="project-card__heading">
+          <span className="project-card__category">{project.category}</span>
+          <h3 className="project-card__title">{project.title}</h3>
+        </div>
         <p className="project-card__description">{project.description}</p>
         <div className="project-card__tech">
           {project.tech.map((item) => (
@@ -51,12 +62,17 @@ export function ProjectCard({ project }) {
           ))}
         </div>
         <div className="project-card__actions">
-          <Button href={project.demoUrl} variant="primary" target="_blank" rel="noopener noreferrer">
-            Live Demo
-          </Button>
-          <Button href={project.githubUrl} variant="outline" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </Button>
+          {hasDemo && (
+            <Button href={project.demoUrl} variant="primary" target="_blank" rel="noopener noreferrer">
+              View project <span aria-hidden="true">↗</span>
+            </Button>
+          )}
+          {hasGithub && (
+            <Button href={project.githubUrl} variant="outline" target="_blank" rel="noopener noreferrer">
+              Source code <span aria-hidden="true">↗</span>
+            </Button>
+          )}
+          {!hasDemo && !hasGithub && <span className="project-card__private">Private project</span>}
         </div>
       </div>
     </article>

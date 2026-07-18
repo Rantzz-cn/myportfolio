@@ -1,3 +1,6 @@
+import antigravityLogo from '../assets/images/ai-tools/antigravity.svg';
+import higgsfieldLogo from '../assets/images/ai-tools/higgsfield.png';
+
 export const skillGroups = [
   {
     id: 'frontend',
@@ -39,8 +42,20 @@ export const skillGroups = [
     title: 'Design',
     items: [
       { icon: 'logos:figma', label: 'Figma' },
-      { text: 'R', className: 'skill-card__icon--responsive', label: 'Responsive Design' },
-      { text: 'UX', className: 'skill-card__icon--uiux', label: 'UI / UX' },
+      { icon: 'logos:adobe-photoshop', label: 'Adobe Photoshop' },
+    ],
+  },
+  {
+    id: 'ai-tools',
+    title: 'AI Tools',
+    items: [
+      { image: antigravityLogo, wideLogo: true, label: 'Anti Gravity' },
+      { icon: 'simple-icons:claude', label: 'Claude', color: '#D97757' },
+      { icon: 'simple-icons:openai', label: 'ChatGPT', color: 'var(--color-foreground)' },
+      { icon: 'simple-icons:googlegemini', label: 'Gemini', color: '#8E75FF' },
+      { icon: 'simple-icons:elevenlabs', label: 'ElevenLabs', color: 'var(--color-foreground)' },
+      { image: higgsfieldLogo, label: 'Higgsfield' },
+      { icon: 'noto:banana', label: 'Nano Banana' },
     ],
   },
 ];

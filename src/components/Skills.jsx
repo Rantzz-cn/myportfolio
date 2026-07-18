@@ -28,10 +28,16 @@ export function Skills() {
                 {group.items.map((item) => (
                   <li className="skill-card__item" key={item.label}>
                     <span
-                      className={`skill-card__icon${item.className ? ` ${item.className}` : ''}`}
+                      className={`skill-card__icon${item.className ? ` ${item.className}` : ''}${item.wideLogo ? ' skill-card__icon--crop' : ''}`}
                       aria-hidden={item.text ? 'true' : undefined}
                     >
-                      {item.icon ? (
+                      {item.image ? (
+                        <img
+                          className={`skill-card__brand-logo${item.wideLogo ? ' skill-card__brand-logo--crop' : ''}`}
+                          src={item.image}
+                          alt=""
+                        />
+                      ) : item.icon ? (
                         <iconify-icon icon={item.icon} width="20" style={item.color ? { color: item.color } : undefined}></iconify-icon>
                       ) : (
                         item.text
