@@ -4,6 +4,7 @@ import project3 from '../assets/images/project-3.png';
 import kuroCheatsImage from '../assets/images/project-kurocheats.png';
 import repMateImage from '../assets/images/project-repmate.png';
 import allFireImage from '../assets/images/project-allfire.png';
+import vrtxImage from '../assets/images/project-vrtx.png';
 
 export const projects = [
   {
@@ -69,7 +70,7 @@ export const projects = [
     category: 'Web Apps',
     year: '2026',
     tech: ['Next.js', 'TypeScript', 'Supabase', 'PWA'],
-    demoUrl: 'https://repmategym.vercel.app/',
+    demoUrl: 'https://rep-mate.app/',
     githubUrl: '#',
     imageFit: 'contain',
   },
@@ -84,6 +85,19 @@ export const projects = [
     year: '2026',
     tech: ['HTML', 'CSS', 'JavaScript', 'Responsive Design'],
     demoUrl: 'https://allfiresydney.netlify.app/',
+    githubUrl: '#',
+  },
+  {
+    id: 'vrtx',
+    title: 'VRTX',
+    description:
+      'A polished performance sportswear storefront with immersive collection storytelling, product discovery, wishlist and cart interactions, and responsive shopping flows.',
+    image: vrtxImage,
+    alt: 'VRTX performance sportswear storefront preview',
+    category: 'E-commerce',
+    year: '2026',
+    tech: ['HTML', 'CSS', 'JavaScript', 'Responsive Design'],
+    demoUrl: 'https://vor-tex.netlify.app/',
     githubUrl: '#',
   },
 ];
