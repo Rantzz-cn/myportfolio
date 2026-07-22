@@ -3,8 +3,9 @@ import { Button } from './Button';
 import resumeUrl from '../assets/resume/TeraldicoRanier_Resume.pdf?url';
 
 const NAV_LINKS = [
+  { href: '#projects', label: 'Work' },
   { href: '#about', label: 'About' },
-  { href: '#projects', label: 'Projects' },
+  { href: '#skills', label: 'Toolkit' },
   { href: '#experience', label: 'Experience' },
   { href: '#contact', label: 'Contact' },
 ];
@@ -33,7 +34,7 @@ export function Navbar({ activeId, scrolled, theme, onToggleTheme }) {
     <header className="navbar" style={{ boxShadow: scrolled ? 'var(--shadow-sm)' : 'none' }}>
       <div className="container navbar__inner">
         <a href="#hero" className="navbar__logo">
-          Ranier<span>.dev</span>
+          RT<span>/26</span>
         </a>
 
         <nav className="navbar__links" aria-label="Primary navigation">
@@ -87,7 +88,12 @@ export function Navbar({ activeId, scrolled, theme, onToggleTheme }) {
         aria-label="Mobile navigation"
       >
         {NAV_LINKS.map((link) => (
-          <a key={link.href} href={link.href} className="navbar__mobile-link" onClick={closeMenu}>
+          <a
+            key={link.href}
+            href={link.href}
+            className={`navbar__mobile-link${isActive(link.href) ? ' is-active' : ''}`}
+            onClick={closeMenu}
+          >
             {link.label}
           </a>
         ))}

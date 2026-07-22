@@ -53,7 +53,7 @@ export function Hero({ ready }) {
       )
       .add(
         {
-          targets: '.hero__role, .hero__description, .hero__actions',
+          targets: '.hero__role, .hero__description, .hero__actions, .hero__proof',
           opacity: [0, 1],
           translateY: [24, 0],
           delay: anime.stagger(110),
@@ -128,24 +128,38 @@ export function Hero({ ready }) {
         <div className="hero__content">
           <p className="hero__greeting pill" style={{ opacity: 0 }}>
             <span className="pill__dot" aria-hidden="true"></span>
-            Hello, I'm
+            Independent developer · Philippines
           </p>
           <SplitName />
           <p className="hero__role" style={{ opacity: 0 }}>
-            Web Developer / Freelancer
+            Design-minded web developer
           </p>
           <p className="hero__description" style={{ opacity: 0 }}>
-            I build responsive websites that help businesses establish a strong online presence —
-            combining clean code, thoughtful design, and smooth user experiences.
+            I turn ambitious ideas into fast, expressive digital products—combining clean code,
+            sharp visual systems, and interactions that feel genuinely considered.
           </p>
           <div className="hero__actions" style={{ opacity: 0 }}>
             <Button href="#projects" variant="primary">
-              View Projects
+              Explore selected work
             </Button>
             <Button href="#contact" variant="outline">
-              Contact Me
+              Start a conversation
             </Button>
           </div>
+          <dl className="hero__proof" style={{ opacity: 0 }} aria-label="Portfolio summary">
+            <div>
+              <dt>Selected work</dt>
+              <dd>7 shipped projects</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>Websites &amp; web apps</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd><span aria-hidden="true"></span> Available for work</dd>
+            </div>
+          </dl>
         </div>
 
         <div className="hero__visual" ref={visualRef} style={{ opacity: 0 }}>

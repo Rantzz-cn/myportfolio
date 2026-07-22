@@ -5,7 +5,7 @@ import { Button } from './Button';
  * Single project card with the cursor-aware spotlight glow
  * (initProjectSpotlight in the original).
  */
-export function ProjectCard({ project, featured = false }) {
+export function ProjectCard({ project, featured = false, compact = false, index }) {
   const cardRef = useRef(null);
 
   function onMouseMove(event) {
@@ -20,10 +20,11 @@ export function ProjectCard({ project, featured = false }) {
 
   const hasDemo = project.demoUrl && project.demoUrl !== '#';
   const hasGithub = project.githubUrl && project.githubUrl !== '#';
+  const primaryUrl = hasDemo ? project.demoUrl : hasGithub ? project.githubUrl : null;
 
   return (
     <article
-      className={`card project-card${featured ? ' project-card--featured' : ''}`}
+      className={`card project-card${featured ? ' project-card--featured' : ''}${compact ? ' project-card--compact' : ''}`}
       ref={cardRef}
       onMouseMove={onMouseMove}
       style={{
@@ -34,15 +35,36 @@ export function ProjectCard({ project, featured = false }) {
       }}
     >
       <div className="project-card__media">
-        <img
-          className="project-card__image"
-          src={project.image}
-          alt={project.alt}
-          style={project.imageFit ? { objectFit: project.imageFit } : undefined}
-          loading="lazy"
-          width="800"
-          height="500"
-        />
+        {primaryUrl ? (
+          <a
+            className="project-card__media-link"
+            href={primaryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open ${project.title} ${hasDemo ? 'live project' : 'source code'}`}
+          >
+            <img
+              className="project-card__image"
+              src={project.image}
+              alt={project.alt}
+              style={project.imageFit ? { objectFit: project.imageFit } : undefined}
+              loading="lazy"
+              width="800"
+              height="500"
+            />
+            <span className="project-card__open" aria-hidden="true">Open {hasDemo ? 'live site' : 'source'} ↗</span>
+          </a>
+        ) : (
+          <img
+            className="project-card__image"
+            src={project.image}
+            alt={project.alt}
+            style={project.imageFit ? { objectFit: project.imageFit } : undefined}
+            loading="lazy"
+            width="800"
+            height="500"
+          />
+        )}
         <div className="project-card__media-meta">
           {project.featured && <span className="project-card__featured">Featured</span>}
           <span>{project.year}</span>
@@ -50,7 +72,10 @@ export function ProjectCard({ project, featured = false }) {
       </div>
       <div className="project-card__body">
         <div className="project-card__heading">
-          <span className="project-card__category">{project.category}</span>
+          <div className="project-card__kicker">
+            <span className="project-card__category">{project.category}</span>
+            {compact && <span className="project-card__index">{String(index).padStart(2, '0')}</span>}
+          </div>
           <h3 className="project-card__title">{project.title}</h3>
         </div>
         <p className="project-card__description">{project.description}</p>

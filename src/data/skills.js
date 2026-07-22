@@ -9,7 +9,9 @@ export const skillGroups = [
       { icon: 'logos:html-5', label: 'HTML' },
       { icon: 'logos:css-3', label: 'CSS' },
       { icon: 'logos:javascript', label: 'JavaScript' },
+      { icon: 'logos:typescript-icon', label: 'TypeScript' },
       { icon: 'logos:react', label: 'React' },
+      { icon: 'logos:nextjs-icon', label: 'Next.js' },
     ],
   },
   {

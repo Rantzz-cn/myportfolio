@@ -550,7 +550,7 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
 .projects__showcase {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-6);
 }
 
 .project-card:hover {
@@ -663,6 +663,19 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
   gap: var(--space-1);
 }
 
+.project-card__kicker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.project-card__index {
+  color: var(--color-muted-foreground);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
 .project-card__category {
   color: var(--color-accent);
   font-family: var(--font-mono);
@@ -699,6 +712,56 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
 .project-card__private {
   color: var(--color-muted-foreground);
   font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+/* Compact editorial cards keep the archive scannable without hiding work. */
+.project-card--compact {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.78fr) minmax(0, 1.22fr);
+  min-height: 220px;
+  padding: 0;
+}
+
+.project-card--compact .project-card__media {
+  height: 100%;
+  min-height: 220px;
+  margin: 0;
+  border-radius: calc(var(--radius-md) - 1px) 0 0 calc(var(--radius-md) - 1px);
+  aspect-ratio: auto;
+}
+
+.project-card--compact .project-card__media-meta {
+  inset: auto var(--space-3) var(--space-3);
+}
+
+.project-card--compact .project-card__body {
+  min-width: 0;
+  padding: var(--space-5);
+}
+
+.project-card--compact .project-card__title {
+  font-size: var(--fs-lg);
+}
+
+.project-card--compact .project-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.project-card--compact .project-card__tech {
+  max-height: 28px;
+  overflow: hidden;
+}
+
+.project-card--compact .project-card__actions {
+  padding-top: var(--space-2);
+}
+
+.project-card--compact .project-card__actions .btn {
+  padding-inline: var(--space-3);
   font-size: var(--fs-xs);
 }
 

@@ -61,8 +61,8 @@ export function Projects() {
             <ProjectCard project={featuredProject} featured />
           )}
           <div className="projects__grid">
-            {gridProjects.map((project) => (
-              <ProjectCard project={project} key={project.id} />
+            {gridProjects.map((project, index) => (
+              <ProjectCard project={project} index={index + 1} compact key={project.id} />
             ))}
           </div>
         </div>
