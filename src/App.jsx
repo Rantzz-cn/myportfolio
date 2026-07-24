@@ -8,6 +8,7 @@ import { Skills } from './components/Skills';
 import { Projects } from './components/Projects';
 import { Experience } from './components/Experience';
 import { Certifications } from './components/Certifications';
+import { TypingChallenge } from './components/TypingChallenge';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { BackToTop } from './components/BackToTop';
@@ -40,6 +41,7 @@ export default function App() {
         <Projects />
         <Experience />
         <Certifications />
+        <TypingChallenge />
         <Contact />
       </main>
 
