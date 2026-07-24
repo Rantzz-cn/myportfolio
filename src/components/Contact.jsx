@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { Button } from './Button';
 import { contactItems } from '../data/contact';
 
 const FORM_ACTION = 'https://formspree.io/f/xbdezwbr';
+const RATE_LIMIT_COOLDOWN_MS = 60 * 1000; // 60 seconds cooldown
 
 export function Contact() {
   const ref = useScrollReveal(
@@ -13,10 +14,59 @@ export function Contact() {
   );
   const formRef = useRef(null);
   const [status, setStatus] = useState({ state: 'idle', message: '' });
+  const [cooldownLeft, setCooldownLeft] = useState(0);
+
+  // Check rate limit status on mount and countdown
+  useEffect(() => {
+    function checkRateLimit() {
+      try {
+        const lastSent = localStorage.getItem('contact_last_submitted');
+        if (lastSent) {
+          const elapsed = Date.now() - parseInt(lastSent, 10);
+          if (elapsed < RATE_LIMIT_COOLDOWN_MS) {
+            const remaining = Math.ceil((RATE_LIMIT_COOLDOWN_MS - elapsed) / 1000);
+            setCooldownLeft(remaining);
+            return remaining;
+          }
+        }
+      } catch (e) {
+        /* storage restricted mode */
+      }
+      setCooldownLeft(0);
+      return 0;
+    }
+
+    checkRateLimit();
+    const interval = setInterval(() => {
+      const left = checkRateLimit();
+      if (left <= 0) clearInterval(interval);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [status.state]);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const form = formRef.current;
+
+    // Check rate limiting before validating form
+    try {
+      const lastSent = localStorage.getItem('contact_last_submitted');
+      if (lastSent) {
+        const elapsed = Date.now() - parseInt(lastSent, 10);
+        if (elapsed < RATE_LIMIT_COOLDOWN_MS) {
+          const remainingSecs = Math.ceil((RATE_LIMIT_COOLDOWN_MS - elapsed) / 1000);
+          setStatus({
+            state: 'rate_limited',
+            message: `Rate limit reached. Please wait ${remainingSecs} second${remainingSecs === 1 ? '' : 's'} before sending another message.`,
+          });
+          return;
+        }
+      }
+    } catch (e) {
+      /* storage restricted mode fallback */
+    }
+
     if (!form.checkValidity()) {
       setStatus({ state: 'error', message: 'Please fill out all fields before sending.' });
       return;
@@ -33,8 +83,15 @@ export function Contact() {
       });
 
       if (response.ok) {
+        // Record timestamp for rate limiting
+        try {
+          localStorage.setItem('contact_last_submitted', Date.now().toString());
+        } catch (e) {
+          /* ignore storage errors */
+        }
         setStatus({ state: 'success', message: 'Thanks! Your message has been sent.' });
         form.reset();
+        setCooldownLeft(60);
       } else {
         const data = await response.json();
         throw new Error(data.error || 'Something went wrong.');
@@ -46,6 +103,8 @@ export function Contact() {
       });
     }
   }
+
+  const isSubmitDisabled = status.state === 'sending' || cooldownLeft > 0;
 
   return (
     <section id="contact" className="section" aria-label="Contact">
@@ -69,7 +128,12 @@ export function Contact() {
                 <div>
                   <p className="contact-info__label">{item.label}</p>
                   {item.href ? (
-                    <a className="contact-info__value" href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+                    <a
+                      className="contact-info__value"
+                      href={item.href}
+                      target={item.href.startsWith('http') ? '_blank' : undefined}
+                      rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    >
                       {item.value}
                     </a>
                   ) : (
@@ -86,7 +150,15 @@ export function Contact() {
                 <label className="form__label" htmlFor="name">
                   Name
                 </label>
-                <input className="form__input" type="text" id="name" name="name" placeholder="Your name" required />
+                <input
+                  className="form__input"
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Your name"
+                  required
+                  disabled={cooldownLeft > 0}
+                />
               </div>
 
               <div className="form__group">
@@ -100,6 +172,7 @@ export function Contact() {
                   name="email"
                   placeholder="you@example.com"
                   required
+                  disabled={cooldownLeft > 0}
                 />
               </div>
 
@@ -113,14 +186,19 @@ export function Contact() {
                   name="message"
                   placeholder="Tell me about your project..."
                   required
+                  disabled={cooldownLeft > 0}
                 ></textarea>
               </div>
 
               {/* Spam protection (honeypot) */}
               <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex="-1" autoComplete="off" />
 
-              <Button type="submit" variant="primary" block disabled={status.state === 'sending'}>
-                {status.state === 'sending' ? 'Sending...' : 'Send Message'}
+              <Button type="submit" variant="primary" block disabled={isSubmitDisabled}>
+                {status.state === 'sending'
+                  ? 'Sending...'
+                  : cooldownLeft > 0
+                  ? `Please wait (${cooldownLeft}s)`
+                  : 'Send Message'}
               </Button>
               <p
                 className="form__status"
@@ -130,7 +208,7 @@ export function Contact() {
                   color:
                     status.state === 'success'
                       ? 'var(--color-success)'
-                      : status.state === 'error'
+                      : status.state === 'rate_limited' || status.state === 'error'
                       ? 'var(--color-danger)'
                       : undefined,
                 }}

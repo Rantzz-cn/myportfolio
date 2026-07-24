@@ -162,7 +162,12 @@ body::after {
 }
 
 #hero {
+  min-height: 100vh;
   min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
 }
 
 #hero::before {
@@ -171,52 +176,63 @@ body::after {
 }
 
 .hero {
-  min-height: 100svh;
-  padding-top: 8rem;
-  padding-bottom: 4rem;
-  grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+  min-height: auto;
+  padding-top: clamp(4.5rem, 8vh, 6.5rem);
+  padding-bottom: clamp(1.5rem, 3vh, 3rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr);
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
 }
 
 .hero__content {
-  gap: .4rem;
+  gap: .3rem;
   align-self: center;
+  z-index: 2;
+  position: relative;
 }
 
 .hero__greeting {
   width: max-content;
-  margin-bottom: 2rem;
-  font: .68rem var(--font-mono);
+  margin-bottom: clamp(1rem, 2vh, 1.5rem);
+  font: .65rem var(--font-mono);
   text-transform: uppercase;
   letter-spacing: .1em;
 }
 
 .hero__name {
   max-width: 900px;
-  font-size: clamp(4rem, 8.5vw, 8.4rem);
-  line-height: .84;
-  letter-spacing: -.075em;
+  font-size: clamp(3rem, 6.2vw, 6.2rem);
+  line-height: .86;
+  letter-spacing: -.065em;
   text-transform: uppercase;
 }
 
-.hero__name>span:last-child {
-  margin-left: clamp(0rem, 5vw, 5rem);
+.hero__name-word--surname {
+  font-size: .84em;
+  letter-spacing: -.05em;
+}
+
+.hero__name > span:last-child {
+  margin-left: clamp(0rem, 3vw, 3rem);
   color: var(--color-accent);
 }
 
 .hero__role {
-  margin-top: 2rem;
-  font-size: clamp(1rem, 2vw, 1.35rem);
+  margin-top: clamp(0.75rem, 2vh, 1.25rem);
+  font-size: clamp(.92rem, 1.4vw, 1.15rem);
   color: var(--color-foreground);
 }
 
 .hero__role::before {
   content: 'AVAILABLE / 2026';
-  margin-right: 1rem;
-  padding: .4rem .55rem;
+  margin-right: .85rem;
+  padding: .35rem .5rem;
   color: #10110d;
   background: var(--color-accent);
-  font-size: .58rem;
+  font-size: .56rem;
   letter-spacing: .08em;
+  font-weight: 700;
 }
 
 .hero__role::after {
@@ -224,27 +240,36 @@ body::after {
 }
 
 .hero__description {
-  max-width: 58ch;
-  font-size: clamp(1rem, 1.4vw, 1.18rem);
+  max-width: 54ch;
+  margin-top: clamp(0.5rem, 1.5vh, 1rem);
+  font-size: clamp(.92rem, 1.25vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--color-muted-foreground);
+}
+html[data-theme="dark"] .hero__description {
+  color: #a8a99c;
 }
 
 .hero__actions {
-  margin-top: 2rem;
+  margin-top: clamp(1rem, 2.5vh, 1.6rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
 }
 
 .hero__proof {
   display: grid;
   grid-template-columns: repeat(3, max-content);
-  gap: clamp(1.2rem, 3vw, 3rem);
-  margin-top: 2.2rem;
-  padding-top: 1.15rem;
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  margin-top: clamp(1.2rem, 2.5vh, 1.6rem);
+  padding-top: clamp(0.75rem, 1.5vh, 1rem);
   border-top: 1px solid var(--color-border);
 }
 
 .hero__proof dt {
-  margin-bottom: .3rem;
+  margin-bottom: .25rem;
   color: var(--color-muted-foreground);
-  font: .6rem var(--font-mono);
+  font: .58rem var(--font-mono);
   letter-spacing: .1em;
   text-transform: uppercase;
 }
@@ -268,31 +293,37 @@ body::after {
 .hero__visual {
   justify-content: flex-end;
   perspective: 1000px;
+  z-index: 1;
+  position: relative;
 }
 
 .hero__robot-wrapper {
-  max-width: 390px;
+  width: 100%;
+  max-width: 340px;
   aspect-ratio: 3/4;
   border-radius: 0;
   border: 1px solid var(--color-border-strong);
   overflow: visible;
-  transform: rotate(2deg);
-  box-shadow: 18px 18px 0 var(--color-accent-soft);
+  transform: rotate(1.5deg);
+  box-shadow: 14px 14px 0 var(--color-accent-soft);
+  position: relative;
 }
 
 .hero__robot-wrapper::before {
   content: 'PORTRAIT / 001';
   position: absolute;
-  top: -1.8rem;
+  top: -1.6rem;
   right: 0;
-  font: .62rem var(--font-mono);
+  font: .6rem var(--font-mono);
   letter-spacing: .12em;
   color: var(--color-muted-foreground);
 }
 
 .hero__robot {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center top;
   filter: grayscale(1) contrast(1.12);
 }
 
@@ -301,7 +332,7 @@ body::after {
   position: absolute;
   inset: 0;
   border: 1px solid var(--color-accent);
-  transform: translate(-9px, 9px);
+  transform: translate(-8px, 8px);
   pointer-events: none;
 }
 

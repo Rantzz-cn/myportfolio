@@ -10,47 +10,38 @@
   position: fixed;
   inset: 0;
   z-index: 999999;
-  background-color: #0d0d0f;
+  background-color: var(--color-background);
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+  transition: opacity 0.35s cubic-bezier(0.76, 0, 0.24, 1), visibility 0.35s;
 }
 
 .preloader.is-hidden {
-  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
-
-/* Light mode: make preloader white */
-html[data-theme="light"] .preloader { background-color: var(--color-background); }
 
 .preloader__content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
   opacity: 1;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.3s ease;
 }
 
 .preloader.is-hidden .preloader__content {
   opacity: 0;
 }
 
-.preloader__counter {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 5rem);
-  font-weight: 700;
-  color: var(--color-foreground);
-  line-height: 1;
-}
-
 .preloader__brand {
   font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  letter-spacing: 0.2em;
-  color: var(--color-muted-foreground);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-foreground);
   text-transform: uppercase;
 }
 
@@ -59,13 +50,12 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
 }
 
 .preloader__bar-container {
-  width: 200px;
+  width: 180px;
   height: 2px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-full);
-  overflow: hidden;
+  background-color: var(--color-border);
   position: relative;
-  margin-top: var(--space-2);
+  margin-top: 0.25rem;
+  overflow: hidden;
 }
 
 .preloader__bar {
@@ -73,9 +63,26 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
   top: 0;
   left: 0;
   height: 100%;
-  width: 0%;
+  width: 100%;
   background-color: var(--color-accent);
-  transition: width 0.1s linear;
+  animation: preloaderScan 1.0s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  transform-origin: left;
+}
+
+@keyframes preloaderScan {
+  0% { transform: scaleX(0); transform-origin: left; }
+  50% { transform: scaleX(1); transform-origin: left; }
+  50.1% { transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+
+.preloader__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  color: var(--color-muted-foreground);
+  text-transform: uppercase;
+  margin-top: 0.25rem;
 }
 
 /* ---------- Buttons ---------- */
@@ -84,10 +91,12 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: 0.8rem 1.6rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono);
   font-size: var(--fs-sm);
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   border-radius: var(--radius-sm);
   border: var(--border-width) solid transparent;
   transition: background-color var(--transition-fast),
@@ -97,20 +106,29 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
               box-shadow var(--transition-fast);
   white-space: nowrap;
   position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
 }
 
 .btn:active {
-  transform: scale(0.97);
+  transform: translateY(1px) scale(0.98);
 }
 
 .btn--primary {
   background-color: var(--color-accent);
-  color: var(--color-accent-foreground);
+  color: #10110d;
+  border-color: var(--color-accent);
 }
 
 .btn--primary:hover {
-  background-color: var(--color-hover);
-  box-shadow: 0 0 0 4px var(--color-accent-soft);
+  background-color: var(--color-accent);
+  color: #10110d;
+  box-shadow: 4px 4px 0 var(--color-signal);
   transform: translateY(-2px);
 }
 
@@ -123,7 +141,21 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
 .btn--outline:hover {
   border-color: var(--color-accent);
   color: var(--color-accent);
+  box-shadow: 4px 4px 0 var(--color-accent-soft);
   transform: translateY(-2px);
+}
+
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.2rem;
+  font-size: 1.1em;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+.btn:hover .btn__icon {
+  transform: translate(3px, -3px);
 }
 
 .btn--block {
@@ -131,10 +163,6 @@ html[data-theme="light"] .preloader { background-color: var(--color-background);
 }
 
 /* ---------- Button Shine Effect ---------- */
-.btn {
-  overflow: hidden;
-}
-
 .btn__shine {
   position: absolute;
   top: 0;

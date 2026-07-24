@@ -6,15 +6,18 @@ import profileImg from '../assets/images/profile.png';
 const HERO_NAME = 'Ranier Teraldico';
 
 /**
- * Splits "Ranier Teraldico" into per-character spans (wrapped per word so
- * words don't break mid-line), matching animations.js's splitHeroName().
+ * Splits "Ranier Teraldico" into per-character spans.
+ * Applies hero__name-word--surname to "Teraldico" for proportional control.
  */
 function SplitName() {
   const words = HERO_NAME.split(' ');
   return (
     <h1 className="hero__name">
       {words.map((word, wi) => (
-        <span key={wi}>
+        <span
+          key={wi}
+          className={`hero__name-word${wi === 1 ? ' hero__name-word--surname' : ''}`}
+        >
           <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
             {word.split('').map((char, ci) => (
               <span className="char" key={ci} style={{ opacity: 0 }}>
@@ -22,7 +25,7 @@ function SplitName() {
               </span>
             ))}
           </span>
-          {wi < words.length - 1 && <span style={{ display: 'inline-block', width: '0.3em' }} />}
+          {wi < words.length - 1 && <span style={{ display: 'inline-block', width: '0.28em' }} />}
         </span>
       ))}
     </h1>
@@ -37,44 +40,51 @@ export function Hero({ ready }) {
   useEffect(() => {
     if (!ready) return;
 
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      anime.set('.hero__greeting, .hero__name .char, .hero__role, .hero__description, .hero__actions, .hero__proof, .hero__visual', { opacity: 1, translateY: 0 });
+      return;
+    }
+
     anime
       .timeline({ easing: 'easeOutExpo' })
-      .add({ targets: '.hero__greeting', opacity: [0, 1], translateY: [20, 0], duration: 700 })
+      .add({ targets: '.hero__greeting', opacity: [0, 1], translateY: [16, 0], duration: 600 })
       .add(
         {
           targets: '.hero__name .char',
           opacity: [0, 1],
-          translateY: [36, 0],
-          rotateZ: [6, 0],
-          delay: anime.stagger(28),
-          duration: 700,
+          translateY: [28, 0],
+          rotateZ: [4, 0],
+          delay: anime.stagger(24),
+          duration: 650,
         },
-        '-=400'
+        '-=350'
       )
       .add(
         {
           targets: '.hero__role, .hero__description, .hero__actions, .hero__proof',
           opacity: [0, 1],
-          translateY: [24, 0],
-          delay: anime.stagger(110),
-          duration: 750,
+          translateY: [18, 0],
+          delay: anime.stagger(90),
+          duration: 650,
         },
-        '-=300'
+        '-=280'
       )
       .add(
-        { targets: '.hero__visual', opacity: [0, 1], translateY: [24, 0], scale: [0.96, 1], duration: 900 },
-        '-=650'
-      )
-      .add({ targets: '.hero__scroll-cue', opacity: [0, 1], duration: 600 }, '-=300');
+        { targets: '.hero__visual', opacity: [0, 1], translateY: [18, 0], scale: [0.97, 1], duration: 800 },
+        '-=550'
+      );
   }, [ready]);
 
-  /* Continuous idle float */
+  /* Continuous idle float (bypassed if reduced motion preferred) */
   useEffect(() => {
     if (!robotRef.current) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const animation = anime({
       targets: robotRef.current,
-      translateY: [-12, 12],
-      duration: 3200,
+      translateY: [-6, 6],
+      duration: 3600,
       direction: 'alternate',
       loop: true,
       easing: 'easeInOutSine',
@@ -82,12 +92,14 @@ export function Hero({ ready }) {
     return () => animation.pause();
   }, []);
 
-  /* Mouse parallax on the robot/portrait */
+  /* Mouse parallax on the portrait */
   useEffect(() => {
     const stage = visualRef.current;
     const robot = robotRef.current;
     if (!stage || !robot) return;
-    const strength = 18;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const strength = 12;
 
     function onMouseMove(event) {
       const bounds = stage.getBoundingClientRect();
@@ -95,10 +107,10 @@ export function Hero({ ready }) {
       const relY = (event.clientY - bounds.top) / bounds.height - 0.5;
       anime({
         targets: robot,
-        translateX: relX * strength * 2,
-        rotateY: relX * 10,
-        rotateX: relY * -10,
-        duration: 600,
+        translateX: relX * strength,
+        rotateY: relX * 6,
+        rotateX: relY * -6,
+        duration: 500,
         easing: 'easeOutQuad',
       });
     }
@@ -109,7 +121,7 @@ export function Hero({ ready }) {
         translateX: 0,
         rotateX: 0,
         rotateY: 0,
-        duration: 800,
+        duration: 700,
         easing: 'easeOutElastic(1, .6)',
       });
     }
@@ -142,7 +154,7 @@ export function Hero({ ready }) {
             <Button href="#projects" variant="primary">
               Explore selected work
             </Button>
-            <Button href="#contact" variant="outline">
+            <Button href="#contact" variant="outline" icon="↗">
               Start a conversation
             </Button>
           </div>
@@ -169,16 +181,11 @@ export function Hero({ ready }) {
               id="profile-img"
               className="hero__robot"
               src={profileImg}
-              alt="Portrait of Ranier Teraldico"
+              alt="Black and white portrait of Ranier Teraldico, web developer"
               width="600"
               height="600"
             />
           </div>
-        </div>
-
-        <div className="hero__scroll-cue" style={{ opacity: 0 }}>
-          <span>Scroll</span>
-          <span className="hero__scroll-cue-line"></span>
         </div>
       </div>
     </section>
